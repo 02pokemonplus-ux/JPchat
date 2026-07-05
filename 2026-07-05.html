@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日記批改回饋單</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#f0ede8;padding:2rem 1rem;min-height:100vh;font-family:'Noto Sans JP',sans-serif}
+  .diary-wrap{background:#fcfbfa;color:#2d2d2d;padding:2rem 1.75rem 1.5rem;border-radius:16px;border:0.5px solid #e4e0da;max-width:700px;margin:0 auto}
+  .header-block{text-align:center;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1.5px dashed #d9d4cc}
+  .header-jp{font-family:'Noto Serif JP',serif;font-size:13px;color:#9a8f82;letter-spacing:.12em;margin-bottom:4px}
+  .header-title{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:600;color:#3a2e25;letter-spacing:.06em;margin:0 0 6px}
+  .header-date{font-size:12px;color:#b0a89c;letter-spacing:.05em}
+  .section-label{font-size:11px;font-weight:500;letter-spacing:.14em;color:#a09488;text-transform:uppercase;margin-bottom:8px}
+  .overall-block{background:#f5ede0;border-left:3px solid #d4956a;border-radius:0 10px 10px 0;padding:1rem 1.25rem;margin-bottom:1.75rem;font-size:14px;line-height:1.85;color:#3a2e25}
+  .jp-accent{font-family:'Noto Serif JP',serif;color:#c07843;font-size:15px}
+  .corrections-title{font-size:13px;font-weight:500;color:#6b5e53;letter-spacing:.08em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .corrections-title::after{content:'';flex:1;height:0.5px;background:#ddd8d0}
+  .card{background:#fff;border:0.5px solid #e6e1db;border-radius:12px;padding:1rem 1.2rem;margin-bottom:10px}
+  .card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .num-badge{width:22px;height:22px;border-radius:50%;background:#e8e2da;color:#7a6e65;font-size:11px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .tag{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px;letter-spacing:.04em}
+  .tag-joshi{background:#fde8ef;color:#b5506a}
+  .tag-goi{background:#e8f0fd;color:#4a68c4}
+  .tag-jitai{background:#e8f8ee;color:#3a8a5a}
+  .sentence-row{display:grid;grid-template-columns:28px 1fr;gap:6px;margin-bottom:6px;font-size:13.5px;line-height:1.7;align-items:start}
+  .row-icon{font-size:12px;padding-top:3px;text-align:center}
+  .original-text{color:#9a8a80;text-decoration:line-through;text-decoration-color:#c8a09a}
+  .corrected-text{color:#2d2d2d}
+  .corrected-text strong{color:#c05c35;font-weight:500}
+  .analysis-box{background:#f8f6f2;border-radius:7px;padding:7px 11px;font-size:12.5px;color:#6a5e55;line-height:1.7;margin-top:6px}
+  .tip-row{display:flex;gap:8px;align-items:baseline;font-size:12.5px;color:#6a5e55;margin-top:6px;line-height:1.6}
+  .tip-key{flex-shrink:0;background:#f0ecf7;color:#6b52a8;border-radius:5px;padding:1px 8px;font-size:11px;font-weight:500}
+  .divider{border:none;border-top:0.5px dashed #ddd8d0;margin:1.5rem 0}
+  .footer-block{display:flex;justify-content:space-between;align-items:center;padding-top:1rem;border-top:0.5px solid #e4e0da;font-size:12px;color:#b0a89c}
+  .footer-stamp{background:#f5ede0;border:1px solid #d4956a;border-radius:8px;padding:4px 12px;font-family:'Noto Serif JP',serif;font-size:12px;color:#c07843;letter-spacing:.06em}
+  .diary-box{background:#f9f7f3;border:0.5px solid #e6e1db;border-radius:10px;padding:1rem 1.2rem;font-family:'Noto Serif JP',serif;font-size:13.5px;line-height:2;color:#5a504a;margin-bottom:1.5rem}
+  .box-label{font-family:'Noto Sans JP',sans-serif;font-size:10.5px;color:#b0a89c;letter-spacing:.1em;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="diary-wrap">
+
+  <div class="header-block">
+    <div class="header-jp">先生からのフィードバック</div>
+    <div class="header-title">日記批改回饋單</div>
+    <div class="header-date">2026年7月5日</div>
+  </div>
+
+  <div class="box-label">ORIGINAL DIARY（本次對話主題）</div>
+  <div class="diary-box">
+    日本語の勉強は難しいけど、シャドーイングという方法で会話の練習をしています。
+  </div>
+
+  <div class="overall-block">
+    這次對話的主題圍繞著「學習方法的甘苦談」，內容很真實也很生活化！這次比較明顯的問題是「は」這個主題助詞偶爾會被省略，另外在描述持續進行的習慣時，動詞時態選擇上還可以再自然一點。整體來說句子結構都掌握得不錯，繼續保持這個節奏，會話能力一定會越來越流暢的。<br><br>
+    <span class="jp-accent">継続は力なり、この調子で頑張ってね！</span>
+  </div>
+
+  <div class="corrections-title">詳細批改清單</div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="num-badge">1</div>
+      <span class="tag tag-joshi">助詞錯誤</span>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✕</div>
+      <div class="original-text">日本語の勉強難しいね。</div>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✓</div>
+      <div class="corrected-text">日本語の勉強<strong>は</strong>難しいね。</div>
+    </div>
+    <div class="analysis-box">
+      「は」是主題提示助詞，用來點出「日本語の勉強」這個話題，這種明確點題的句子中，母語者幾乎不會省略「は」。
+    </div>
+    <div class="tip-row">
+      <span class="tip-key">補充</span>
+      <span>口語中偶爾會省略助詞，但通常是省略「が」或「を」，「は」比較少被省略。</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="num-badge">2</div>
+      <span class="tag tag-goi">語彙錯誤</span>
+      <span class="tag tag-jitai">時態錯誤</span>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✕</div>
+      <div class="original-text">私は最近会話能力を練習しました。</div>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✓</div>
+      <div class="corrected-text">私は最近会話の練習<strong>をしています</strong>。</div>
+    </div>
+    <div class="analysis-box">
+      「会話能力を練習する」搭配不自然，「能力」是抽象名詞，較少直接當「練習」的受詞；母語者常說「会話の練習をする」或「会話力を鍛える」。
+    </div>
+    <div class="tip-row">
+      <span class="tip-key">時態・結構</span>
+      <span>描述「最近持續在做的事」時，用「〜しています」比過去式「〜しました」更能表達「持續進行中的習慣」。</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="num-badge">3</div>
+      <span class="tag tag-goi">語彙錯誤</span>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✕</div>
+      <div class="original-text">自分で日本語をshadowingの方法で、練習しています。</div>
+    </div>
+    <div class="sentence-row">
+      <div class="row-icon">✓</div>
+      <div class="corrected-text"><strong>シャドーイング</strong>で日本語を練習しています。</div>
+    </div>
+    <div class="analysis-box">
+      日文句子中的英文單字需轉成片假名（シャドーイング），直接寫羅馬字會顯得突兀；另外「〜の方法で」偏中文直譯語感，日文更自然的說法是直接用「〜で」表示手段方法。
+    </div>
+    <div class="tip-row">
+      <span class="tip-key">另一種說法</span>
+      <span>也可以說「シャドーイングという方法で練習しています」，語感較正式一點。</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="box-label">CORRECTED VERSION（修正後全文參考）</div>
+  <div class="diary-box" style="background:#eef7f0;border-color:#cfe6d5;">
+    日本語の勉強<strong style="color:#2f8a52;">は</strong>難しいね。私は最近会話の練習<strong style="color:#2f8a52;">をしています</strong>。自分で日本語を<strong style="color:#2f8a52;">シャドーイング</strong>で練習しています。
+  </div>
+
+  <div class="footer-block">
+    <span>批改老師：Claude 先生</span>
+    <span class="footer-stamp">よくできました ☆</span>
+  </div>
+
+</div>
+</body>
+</html>
