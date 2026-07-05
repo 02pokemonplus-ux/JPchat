@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本語日記 · 批改紀錄</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --paper:#f0ede8; --card:#fcfbfa; --ink:#3a2e25; --ink-soft:#6a5e55;
+    --muted:#a09488; --faint:#b0a89c; --line:#e4e0da; --line-soft:#ece7e0;
+    --clay:#c07843; --clay-soft:#d4956a; --seal:#b5506a;
+    --joshi-bg:#fde8ef; --joshi-fg:#b5506a;
+    --goi-bg:#e8f0fd;  --goi-fg:#4a68c4;
+    --jitai-bg:#e8f8ee; --jitai-fg:#3a8a5a;
+    --kanji-bg:#fdf0e3; --kanji-fg:#c07843;
+    --other-bg:#efece6; --other-fg:#7a6e65;
+    --toggle-bg:#ece7e0; --toggle-on:#fcfbfa;
+    --shadow:rgba(58,46,37,.08);
+  }
+  html[data-theme="dark"]{
+    --paper:#1c1917; --card:#26221f; --ink:#ece7e0; --ink-soft:#b8ada2;
+    --muted:#8a7f74; --faint:#736a60; --line:#38322d; --line-soft:#312b27;
+    --clay:#e0a06a; --clay-soft:#c07843; --seal:#d97a97;
+    --joshi-bg:#3a2530; --joshi-fg:#e79ab5;
+    --goi-bg:#232f45;  --goi-fg:#8fa8e6;
+    --jitai-bg:#213528; --jitai-fg:#7fc79a;
+    --kanji-bg:#3a2e1e; --kanji-fg:#e0a06a;
+    --other-bg:#332e29; --other-fg:#a89c90;
+    --toggle-bg:#312b27; --toggle-on:#463d36;
+    --shadow:rgba(0,0,0,.35);
+  }
+  body{background:var(--paper);min-height:100vh;font-family:'Noto Sans JP',sans-serif;color:var(--ink);
+    padding:2rem 1rem 4rem;-webkit-font-smoothing:antialiased;transition:background .3s ease,color .3s ease}
+  .wrap{max-width:720px;margin:0 auto}
+
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    margin-bottom:1.1rem;flex-wrap:wrap}
+  .brand{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .brand-eyebrow{font-family:'Noto Serif JP',serif;font-size:10.5px;letter-spacing:.24em;
+    color:var(--clay);text-transform:uppercase}
+  .brand-title{font-family:'Noto Serif JP',serif;font-weight:700;font-size:23px;letter-spacing:.05em;
+    color:var(--ink);line-height:1.2}
+  .controls{display:flex;align-items:center;gap:10px}
+
+  .segmented{display:flex;background:var(--toggle-bg);border-radius:10px;padding:3px;gap:2px}
+  .seg-btn{border:none;background:transparent;cursor:pointer;font-family:inherit;
+    font-size:12px;color:var(--muted);padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:5px;
+    transition:background .2s ease,color .2s ease,box-shadow .2s ease;letter-spacing:.04em}
+  .seg-btn svg{width:14px;height:14px;display:block}
+  .seg-btn[aria-pressed="true"]{background:var(--toggle-on);color:var(--clay);box-shadow:0 1px 3px var(--shadow)}
+  .seg-btn:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+
+  .theme-btn{border:none;background:var(--toggle-bg);cursor:pointer;width:36px;height:36px;
+    border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--ink-soft);
+    transition:background .2s ease,color .2s ease}
+  .theme-btn:hover{color:var(--clay)}
+  .theme-btn:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+  .theme-btn svg{width:17px;height:17px;display:block}
+  .theme-btn .moon{display:none}
+  html[data-theme="dark"] .theme-btn .sun{display:none}
+  html[data-theme="dark"] .theme-btn .moon{display:block}
+
+  .statbar{display:flex;align-items:stretch;background:var(--card);border:0.5px solid var(--line);
+    border-radius:12px;margin-bottom:1.75rem;overflow:hidden}
+  .statbar .stat{flex:1;padding:0.75rem 0.5rem;text-align:center;position:relative}
+  .statbar .stat + .stat::before{content:'';position:absolute;left:0;top:22%;height:56%;width:0.5px;background:var(--line)}
+  .stat-num{font-family:'Noto Serif JP',serif;font-size:21px;font-weight:600;color:var(--clay);line-height:1}
+  .stat-label{font-size:10px;color:var(--faint);letter-spacing:.09em;margin-top:5px}
+
+  .list-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 4px}
+  .list-head span{font-size:11.5px;font-weight:500;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+  .list-head::after{content:'';flex:1;height:0.5px;background:var(--line)}
+
+  .entry{display:block;text-decoration:none;color:inherit;background:var(--card);
+    border:0.5px solid var(--line);border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:11px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .3s ease;position:relative}
+  .entry:hover{transform:translateY(-2px);box-shadow:0 8px 22px var(--shadow);border-color:var(--clay-soft)}
+  .entry:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+  .entry-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
+  .entry-date{font-family:'Noto Serif JP',serif;font-size:17px;font-weight:600;color:var(--ink);letter-spacing:.04em}
+  .entry-count{flex-shrink:0;font-size:11.5px;color:var(--ink-soft);background:var(--other-bg);
+    border-radius:20px;padding:3px 11px;letter-spacing:.03em}
+  .entry-count b{color:var(--clay);font-weight:600}
+  .entry-topic{font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:11px}
+  .entry-topic .jp{font-family:'Noto Serif JP',serif;color:var(--muted);font-size:12.5px}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:10.5px;font-weight:500;padding:2px 10px;border-radius:20px;letter-spacing:.04em}
+  .tag-joshi{background:var(--joshi-bg);color:var(--joshi-fg)}
+  .tag-goi{background:var(--goi-bg);color:var(--goi-fg)}
+  .tag-jitai{background:var(--jitai-bg);color:var(--jitai-fg)}
+  .tag-kanji{background:var(--kanji-bg);color:var(--kanji-fg)}
+  .tag-other{background:var(--other-bg);color:var(--other-fg)}
+  .entry-arrow{position:absolute;right:1.25rem;bottom:1.1rem;color:var(--clay-soft);font-size:15px;
+    opacity:0;transition:opacity .18s ease, transform .18s ease}
+  .entry:hover .entry-arrow{opacity:1;transform:translateX(3px)}
+
+  #list.as-list{background:var(--card);border:0.5px solid var(--line);border-radius:14px;overflow:hidden}
+  #list.as-list .entry{padding:0.7rem 1rem;margin-bottom:0;border-radius:0;border-left:none;border-right:none;
+    border-top:none;border-bottom:0.5px solid var(--line-soft)}
+  #list.as-list .entry:hover{transform:none;box-shadow:none;background:var(--toggle-bg);border-color:var(--line-soft)}
+  #list.as-list .entry:last-child{border-bottom:none}
+  #list.as-list .entry-top{margin-bottom:0}
+  #list.as-list .entry-date{font-size:14.5px}
+  #list.as-list .entry-topic{display:none}
+  #list.as-list .tags{display:none}
+  #list.as-list .entry-arrow{display:none}
+  #list.as-list .entry-count{background:transparent;padding:3px 0}
+
+  .empty{text-align:center;padding:3rem 1.5rem;background:var(--card);
+    border:1px dashed var(--line);border-radius:14px}
+  .empty-jp{font-family:'Noto Serif JP',serif;font-size:15px;color:var(--muted);margin-bottom:8px}
+  .empty-note{font-size:12.5px;color:var(--faint);line-height:1.9}
+  .empty-note code{background:var(--other-bg);color:var(--ink-soft);padding:1px 7px;border-radius:5px;font-size:11.5px}
+
+  .foot{text-align:center;margin-top:2.5rem;font-size:11.5px;color:var(--faint);letter-spacing:.06em;line-height:1.9}
+  .foot .seal{display:inline-block;font-family:'Noto Serif JP',serif;color:var(--clay);
+    border:1px solid var(--clay-soft);border-radius:8px;padding:3px 12px;margin-top:8px;letter-spacing:.1em}
+
+  @media (max-width:520px){
+    .topbar{gap:12px}
+    .brand-title{font-size:20px}
+    .seg-btn span{display:none}
+    .seg-btn{padding:6px 9px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .entry,.entry-arrow,body,.seg-btn,.theme-btn{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-eyebrow">Japanese Diary Feedback</div>
+      <h1 class="brand-title">日本語日記 批改紀錄</h1>
+    </div>
+    <div class="controls">
+      <div class="segmented" role="group" aria-label="瀏覽方式">
+        <button class="seg-btn" id="viewCard" aria-pressed="true" title="卡片檢視">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="8" rx="1.5"/><rect x="3" y="14" width="18" height="7" rx="1.5"/></svg>
+          <span>卡片</span>
+        </button>
+        <button class="seg-btn" id="viewList" aria-pressed="false" title="清單檢視">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <span>清單</span>
+        </button>
+      </div>
+      <button class="theme-btn" id="themeToggle" aria-label="切換晝夜模式" title="切換晝夜模式">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="3.5" y1="3.5" x2="5.3" y2="5.3"/><line x1="18.7" y1="18.7" x2="20.5" y2="20.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="3.5" y1="20.5" x2="5.3" y2="18.7"/><line x1="18.7" y1="5.3" x2="20.5" y2="3.5"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="statbar" id="stats"></div>
+
+  <div class="list-head"><span>批改單一覧</span></div>
+  <div id="list"></div>
+
+  <footer class="foot">
+    こつこつ続けましょう。<br>
+    <span class="seal">継続は力なり</span>
+  </footer>
+
+</div>
+
+<script>
+const TAG_MAP = {
+  joshi: { cls:'tag-joshi', label:'助詞' },
+  goi:   { cls:'tag-goi',   label:'語彙' },
+  jitai: { cls:'tag-jitai', label:'時態' },
+  kanji: { cls:'tag-kanji', label:'漢字' },
+  other: { cls:'tag-other', label:'其他' },
+};
+
+let themeOverride = null;
+function systemDark(){ return window.matchMedia('(prefers-color-scheme: dark)').matches; }
+function applyTheme(){
+  const dark = themeOverride === null ? systemDark() : themeOverride === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+}
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', ()=>{ if(themeOverride===null) applyTheme(); });
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+  const currentlyDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  themeOverride = currentlyDark ? 'light' : 'dark';
+  applyTheme();
+});
+applyTheme();
+
+const btnCard = document.getElementById('viewCard');
+const btnList = document.getElementById('viewList');
+function setView(mode){
+  const listEl = document.getElementById('list');
+  const isList = mode === 'list';
+  listEl.classList.toggle('as-list', isList);
+  btnCard.setAttribute('aria-pressed', String(!isList));
+  btnList.setAttribute('aria-pressed', String(isList));
+}
+btnCard.addEventListener('click', ()=>setView('card'));
+btnList.addEventListener('click', ()=>setView('list'));
+
+function fmtDate(iso){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if(!m) return iso;
+  return m[1]+'年 '+parseInt(m[2])+'月 '+parseInt(m[3])+'日';
+}
+
+function renderStats(entries){
+  const total = entries.length;
+  const corrections = entries.reduce((s,e)=> s + (e.count||0), 0);
+  const freq = {};
+  entries.forEach(e => (e.tags||[]).forEach(t => freq[t] = (freq[t]||0)+1));
+  let topTag = '—';
+  const topKey = Object.keys(freq).sort((a,b)=>freq[b]-freq[a])[0];
+  if(topKey && TAG_MAP[topKey]) topTag = TAG_MAP[topKey].label;
+  document.getElementById('stats').innerHTML =
+    '<div class="stat"><div class="stat-num">'+total+'</div><div class="stat-label">篇批改單</div></div>'+
+    '<div class="stat"><div class="stat-num">'+corrections+'</div><div class="stat-label">個修正累積</div></div>'+
+    '<div class="stat"><div class="stat-num">'+topTag+'</div><div class="stat-label">最常出現</div></div>';
+}
+
+function renderList(entries){
+  const list = document.getElementById('list');
+  if(!entries.length){
+    list.innerHTML = '<div class="empty"><div class="empty-jp">まだ日記がありません。</div>'+
+      '<div class="empty-note">在 <code>list.json</code> 加入第一筆紀錄，<br>批改單就會出現在這裡。</div></div>';
+    return;
+  }
+  entries.sort((a,b)=> (a.date < b.date ? 1 : -1));
+  list.innerHTML = entries.map(function(e){
+    const tags = (e.tags||[]).map(function(t){
+      const m = TAG_MAP[t] || TAG_MAP.other;
+      return '<span class="tag '+m.cls+'">'+m.label+'</span>';
+    }).join('');
+    const topic = e.topic
+      ? '<div class="entry-topic">'+e.topic+(e.topicJp?' <span class="jp">/ '+e.topicJp+'</span>':'')+'</div>'
+      : '';
+    return '<a class="entry" href="'+e.file+'">'+
+      '<div class="entry-top"><div class="entry-date">'+fmtDate(e.date)+'</div>'+
+      '<div class="entry-count">修正 <b>'+(e.count||0)+'</b> 項</div></div>'+
+      topic+'<div class="tags">'+tags+'</div><div class="entry-arrow">→</div></a>';
+  }).join('');
+}
+
+async function init(){
+  try{
+    const res = await fetch('list.json', {cache:'no-store'});
+    if(!res.ok) throw new Error('list.json not found');
+    const data = await res.json();
+    const entries = Array.isArray(data) ? data : (data.entries||[]);
+    renderStats(entries);
+    renderList(entries);
+  }catch(err){
+    document.getElementById('stats').innerHTML = '';
+    document.getElementById('list').innerHTML = '<div class="empty"><div class="empty-jp">読み込みできませんでした。</div>'+
+      '<div class="empty-note">找不到或無法讀取 <code>list.json</code>。<br>請確認檔案存在，且已透過 GitHub Pages（或本機伺服器）開啟本頁。</div></div>';
+  }
+}
+init();
+</script>
+</body>
+</html>
