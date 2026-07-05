@@ -118,6 +118,52 @@
   .foot .seal{display:inline-block;font-family:'Noto Serif JP',serif;color:var(--clay);
     border:1px solid var(--clay-soft);border-radius:8px;padding:3px 12px;margin-top:8px;letter-spacing:.1em}
 
+  /* ── 操作說明 Modal ── */
+  .modal-overlay{position:fixed;inset:0;background:rgba(28,25,23,.5);backdrop-filter:blur(3px);
+    display:flex;align-items:flex-end;justify-content:center;padding:0;z-index:100;
+    opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+  .modal-overlay.open{opacity:1;visibility:visible}
+  .modal{background:var(--paper);border-radius:20px 20px 0 0;width:100%;max-width:640px;
+    max-height:88vh;display:flex;flex-direction:column;
+    transform:translateY(20px);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  @media (min-width:560px){
+    .modal-overlay{align-items:center;padding:1.5rem}
+    .modal{border-radius:18px}
+  }
+  .modal-head{display:flex;align-items:center;justify-content:space-between;
+    padding:1.25rem 1.4rem 1rem;border-bottom:0.5px solid var(--line);flex-shrink:0}
+  .modal-head h2{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:600;color:var(--ink);letter-spacing:.05em}
+  .modal-close{border:none;background:var(--toggle-bg);cursor:pointer;width:32px;height:32px;border-radius:9px;
+    display:flex;align-items:center;justify-content:center;color:var(--ink-soft);flex-shrink:0}
+  .modal-close:hover{color:var(--clay)}
+  .modal-close svg{width:16px;height:16px}
+  .modal-body{padding:1.3rem 1.4rem 1.6rem;overflow-y:auto}
+
+  .help-sec{display:flex;gap:13px;margin-bottom:1.4rem}
+  .help-step{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--clay);color:#fff;
+    font-family:'Noto Serif JP',serif;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  html[data-theme="dark"] .help-step{color:#1c1917}
+  .help-content{flex:1;min-width:0}
+  .help-content h3{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px;letter-spacing:.03em}
+  .help-content p{font-size:13px;color:var(--ink-soft);line-height:1.8;margin-bottom:6px}
+  .help-sub{font-size:12.5px;color:var(--muted)!important;margin-top:8px}
+  .help-content code{background:var(--other-bg);color:var(--clay);padding:1px 6px;border-radius:5px;
+    font-size:12px;font-family:ui-monospace,'SFMono-Regular',Menlo,monospace}
+  .help-content b{color:var(--ink);font-weight:600}
+  .help-note{background:var(--kanji-bg);border-radius:9px;padding:9px 12px;margin:8px 0;
+    font-size:12.5px;color:var(--ink-soft);line-height:1.75}
+  .help-note-key{display:inline-block;background:var(--clay);color:#fff;font-size:10.5px;font-weight:500;
+    padding:1px 8px;border-radius:5px;margin-right:6px;letter-spacing:.05em}
+  html[data-theme="dark"] .help-note-key{color:#1c1917}
+  .help-code{background:var(--card);border:0.5px solid var(--line);border-radius:9px;padding:11px 13px;
+    font-size:12px;line-height:1.7;color:var(--ink-soft);overflow-x:auto;margin:6px 0;
+    font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;white-space:pre}
+  .help-tip{background:var(--goi-bg);color:var(--goi-fg);border-radius:10px;padding:11px 14px;
+    font-size:12.5px;line-height:1.8;margin-top:.5rem}
+  .help-tip code,.help-tip b{color:inherit;font-weight:600}
+  .help-tip code{background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-family:ui-monospace,monospace}
+
   @media (max-width:520px){
     .topbar{gap:12px}
     .brand-title{font-size:20px}
@@ -152,6 +198,9 @@
         <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="3.5" y1="3.5" x2="5.3" y2="5.3"/><line x1="18.7" y1="18.7" x2="20.5" y2="20.5"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="3.5" y1="20.5" x2="5.3" y2="18.7"/><line x1="18.7" y1="5.3" x2="20.5" y2="3.5"/></svg>
         <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
       </button>
+      <button class="theme-btn" id="helpToggle" aria-label="操作說明" title="操作說明">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M9.2 9a2.8 2.8 0 0 1 5.5.8c0 1.9-2.8 2.5-2.8 4"/><line x1="12" y1="17.5" x2="12.01" y2="17.5"/></svg>
+      </button>
     </div>
   </div>
 
@@ -165,6 +214,72 @@
     <span class="seal">継続は力なり</span>
   </footer>
 
+</div>
+
+<!-- ── 操作說明 Modal ── -->
+<div class="modal-overlay" id="helpModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal-head">
+      <h2 id="helpTitle">操作說明</h2>
+      <button class="modal-close" id="helpClose" aria-label="關閉">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="help-sec">
+        <div class="help-step">1</div>
+        <div class="help-content">
+          <h3>新增一份批改單</h3>
+          <p>在 Claude 的日文聊天中輸入「<b>結束對話</b>」，會生成一份批改單 HTML，以及一段對應的 JSON 紀錄。把 HTML 存檔，檔名建議用日期，例如 <code>2026-07-05.html</code>。</p>
+        </div>
+      </div>
+
+      <div class="help-sec">
+        <div class="help-step">2</div>
+        <div class="help-content">
+          <h3>上傳 HTML 到 GitHub</h3>
+          <p>進入本 repo →「Add file」→「Upload files」→ 選剛才那份 HTML，放在跟 <code>index.html</code> 同一層 → Commit。</p>
+        </div>
+      </div>
+
+      <div class="help-sec">
+        <div class="help-step">3</div>
+        <div class="help-content">
+          <h3>把紀錄加進 list.json（重點）</h3>
+          <p><code>list.json</code> 全程只有<b>一個檔案</b>，每次是「<b>編輯</b>」它、在裡面加一筆，不是上傳新的 json。</p>
+          <p>操作：點開 <code>list.json</code> → 右上鉛筆圖示 Edit → 把 Claude 給的那筆物件貼進 <code>[ ]</code> 陣列裡 → Commit。</p>
+          <div class="help-note">
+            <span class="help-note-key">格式提醒</span>
+            新的一筆要放在最外層中括號 <code>[ ]</code> 之內，且與前一筆之間用<b>逗號</b> <code>,</code> 隔開。最後一筆結尾不要加逗號。
+          </div>
+          <p class="help-sub">一筆的長相：</p>
+          <pre class="help-code">{
+  "date": "2026-07-05",
+  "file": "2026-07-05.html",
+  "topic": "聊梅雨季與騎車通勤",
+  "topicJp": "梅雨と通勤の話",
+  "count": 3,
+  "tags": ["joshi", "goi"]
+}</pre>
+          <p class="help-sub"><b>tags</b> 可用值：<code>joshi</code> 助詞 · <code>goi</code> 語彙 · <code>jitai</code> 時態 · <code>kanji</code> 漢字 · <code>other</code> 其他（可複選）。</p>
+        </div>
+      </div>
+
+      <div class="help-sec">
+        <div class="help-step">4</div>
+        <div class="help-content">
+          <h3>完成</h3>
+          <p>重整本頁（Pages 網址），新卡片就會自動出現，點進去即可看批改單。首頁最上方的統計數字也會自動更新。</p>
+        </div>
+      </div>
+
+      <div class="help-tip">
+        💡 看到的是原始碼而不是漂亮畫面？請確認你是從 <b>GitHub Pages 網址</b>（<code>你的帳號.github.io/…</code>）打開，而不是直接在 GitHub 檔案列表點 HTML。
+      </div>
+
+    </div>
+  </div>
 </div>
 
 <script>
@@ -201,6 +316,15 @@ function setView(mode){
 }
 btnCard.addEventListener('click', ()=>setView('card'));
 btnList.addEventListener('click', ()=>setView('list'));
+
+/* ── 操作說明 Modal ── */
+const helpModal = document.getElementById('helpModal');
+function openHelp(){ helpModal.classList.add('open'); helpModal.setAttribute('aria-hidden','false'); }
+function closeHelp(){ helpModal.classList.remove('open'); helpModal.setAttribute('aria-hidden','true'); }
+document.getElementById('helpToggle').addEventListener('click', openHelp);
+document.getElementById('helpClose').addEventListener('click', closeHelp);
+helpModal.addEventListener('click', e=>{ if(e.target === helpModal) closeHelp(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeHelp(); });
 
 function fmtDate(iso){
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
